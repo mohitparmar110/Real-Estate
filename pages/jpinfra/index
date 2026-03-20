@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JP North Listings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #efefef;
+      --paper: #ffffff;
+      --navy: #153f7b;
+      --navy-dark: #103464;
+      --gold: #dfb64d;
+      --gold-dark: #cda33c;
+      --text: #1f3150;
+      --muted: #757c88;
+      --line: #dddddf;
+      --shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      --radius: 4px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', Arial, sans-serif;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    .page {
+      width: 1024px;
+      margin: 0 auto;
+      background: var(--bg);
+    }
+
+    .hero {
+      position: relative;
+      height: 370px;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(21, 48, 92, 0.42) 0%, rgba(21, 48, 92, 0.22) 36%, rgba(21, 48, 92, 0.05) 65%, rgba(21, 48, 92, 0) 100%),
+        linear-gradient(180deg, rgba(96, 139, 208, 0.22) 0%, rgba(232, 193, 161, 0.18) 50%, rgba(157, 118, 85, 0.08) 100%),
+        url('https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1800&q=80') center center / cover no-repeat;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 110px;
+      background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(46,43,47,0.16) 100%);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      padding: 58px 0 0 85px;
+    }
+
+    .hero-copy {
+      width: 470px;
+      color: #fff;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 52px;
+      line-height: 0.95;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
+    }
+
+    .hero-rule {
+      width: 410px;
+      height: 1px;
+      background: rgba(255,255,255,0.68);
+      margin: 18px 0 16px;
+    }
+
+    .hero p {
+      margin: 0;
+      width: 440px;
+      font-size: 14px;
+      line-height: 1.6;
+      font-weight: 500;
+      color: rgba(255,255,255,0.95);
+      text-shadow: 0 2px 6px rgba(0,0,0,0.10);
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 11px;
+      margin-top: 18px;
+    }
+
+    .btn {
+      min-width: 150px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 3px;
+      font-size: 15px;
+      font-weight: 700;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    }
+
+    .btn-primary {
+      background: var(--navy);
+      color: #fff;
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: #2e3a4b;
+    }
+
+    .trust-strip {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 43px;
+      padding: 0 14px;
+      height: 34px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.78);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      color: #264674;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .trust-item { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .trust-dot { width: 1px; height: 12px; background: #ceced3; }
+    .trust-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+      flex: 0 0 16px;
+    }
+
+    .stats {
+      margin: 13px 104px 0;
+      background: #fff;
+      height: 38px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding: 0 17px;
+      box-shadow: var(--shadow);
+      color: #30507d;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .stats strong { color: #29518c; font-weight: 800; }
+    .stat-item { display: inline-flex; align-items: center; gap: 9px; white-space: nowrap; }
+    .stat-icon { color: var(--gold-dark); font-size: 14px; }
+    .stat-sep { width: 1px; height: 16px; background: var(--line); margin: 0 22px; }
+
+    .section {
+      padding-top: 23px;
+    }
+
+    .section-title-row {
+      margin: 0 80px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .section-title-row .line {
+      height: 1px;
+      background: var(--line);
+      flex: 1;
+    }
+
+    .section-title {
+      margin: 0;
+      color: var(--navy);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 34px;
+      line-height: 1;
+      font-weight: 700;
+      white-space: nowrap;
+      letter-spacing: -0.01em;
+    }
+
+    .brands {
+      margin: 17px 104px 0;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1px;
+      background: #e8e8ea;
+    }
+
+    .brand {
+      height: 52px;
+      background: #f7f7f8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #5a5a5d;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.03em;
+    }
+
+    .brand.jp { font-family: Georgia, serif; font-style: italic; }
+    .brand.godrej { font-family: cursive; font-size: 25px; letter-spacing: 0; }
+    .brand.oberoi { font-size: 15px; line-height: 1; text-align: center; }
+    .brand.oberoi small { display: block; font-size: 10px; letter-spacing: 0.14em; margin-top: 2px; }
+    .brand.lt { font-weight: 800; font-size: 22px; }
+
+    .cards-3,
+    .cards-4,
+    .cards-2,
+    .services {
+      margin-left: 104px;
+      margin-right: 104px;
+    }
+
+    .cards-3 {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .cards-4 {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .cards-2 {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .card,
+    .mini-card,
+    .rent-card,
+    .service-card {
+      background: #fff;
+      border: 1px solid #ececee;
+      border-radius: 4px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-image,
+    .mini-image,
+    .rent-image {
+      position: relative;
+      overflow: hidden;
+      background: #d4d8df;
+    }
+
+    .card-image { height: 150px; }
+    .mini-image { height: 120px; }
+    .rent-image { height: 129px; }
+
+    .card-image img,
+    .mini-image img,
+    .rent-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .price-tag {
+      position: absolute;
+      left: 0;
+      top: 10px;
+      min-width: 110px;
+      height: 34px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0 3px 3px 0;
+      color: #fff;
+      font-weight: 800;
+      font-size: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.16);
+    }
+
+    .tag-blue { background: #1b4b89; }
+    .tag-gold { background: #d8b148; }
+    .tag-red { background: #c55b48; }
+
+    .card-body {
+      padding: 10px 12px 10px;
+    }
+
+    .card h3 {
+      margin: 0;
+      color: var(--navy);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 26px;
+      line-height: 0.95;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .card-sub {
+      margin: 8px 0 10px;
+      color: #797f89;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .gold-dot { color: #d5ab40; font-size: 12px; }
+
+    .action-row {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .small-btn {
+      height: 29px;
+      min-width: 118px;
+      padding: 0 12px;
+      border-radius: 3px;
+      border: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #fff;
+      background: var(--navy);
+    }
+
+    .small-btn.gold {
+      background: var(--gold);
+      color: #fff;
+      min-width: 126px;
+    }
+
+    .mini-card .card-body {
+      padding: 8px 10px 10px;
+    }
+
+    .mini-title {
+      margin: 0;
+      color: #222631;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.22;
+    }
+
+    .mini-rule {
+      margin-top: 8px;
+      height: 2px;
+      background: #e7e7e9;
+    }
+
+    .rent-title {
+      padding: 10px 12px 11px;
+      color: var(--navy);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 24px;
+      line-height: 0.95;
+      font-weight: 700;
+    }
+
+    .services {
+      margin-top: 18px;
+      margin-bottom: 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .service-card {
+      height: 110px;
+      background: #f6f6f7;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .service-icon {
+      width: 54px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #707070;
+      font-size: 30px;
+    }
+
+    .service-card span {
+      color: #23406e;
+      font-size: 12px;
+      font-weight: 800;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <h1>Flats Available in JP North<br>&amp; Nearby Projects</h1>
+          <div class="hero-rule"></div>
+          <p>2 BHK, 3 BHK, jodi flats, premium units, rentals, auction deals, and commercial properties in Mira Road and nearby premium projects.</p>
+          <div class="cta-row">
+            <a href="#featured" class="btn btn-primary">View Listings</a>
+            <a href="#" class="btn btn-gold">Enquire Now</a>
+            <a href="#" class="btn btn-gold">Call / WhatsApp</a>
+          </div>
+          <div class="trust-strip">
+            <span class="trust-item"><span class="trust-icon">✓</span> Verified Listings</span>
+            <span class="trust-dot"></span>
+            <span class="trust-item"><span class="trust-icon">₹</span> Bank Auction Deals</span>
+            <span class="trust-dot"></span>
+            <span class="trust-item"><span class="trust-icon">◫</span> Top Developer Network</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="stats">
+      <div class="stat-item"><span class="stat-icon">🏷</span> Starting from <strong>₹55 Lakhs</strong></div>
+      <div class="stat-sep"></div>
+      <div class="stat-item"><span class="stat-icon">🏢</span> <strong>1, 2 &amp; 3 BHK Options</strong></div>
+      <div class="stat-sep"></div>
+      <div class="stat-item"><span class="stat-icon">🏙</span> <strong>Rental + Sale + Auction</strong></div>
+      <div class="stat-sep"></div>
+      <div class="stat-item"><span class="stat-icon">🚗</span> <strong>Parking &amp; Furnished Choices</strong></div>
+    </div>
+
+    <section class="section">
+      <div class="section-title-row">
+        <div class="line"></div>
+        <h2 class="section-title">Developers &amp; Brands We Work With</h2>
+        <div class="line"></div>
+      </div>
+      <div class="brands">
+        <div class="brand jp">JP Infra</div>
+        <div class="brand">LODHA</div>
+        <div class="brand godrej">Godrej</div>
+        <div class="brand oberoi">OBEROI <small>REALTY</small></div>
+        <div class="brand lt">L&amp;T</div>
+      </div>
+    </section>
+
+    <section class="section" id="featured">
+      <div class="section-title-row">
+        <div class="line"></div>
+        <h2 class="section-title">Featured Properties</h2>
+        <div class="line"></div>
+      </div>
+      <div class="cards-3">
+        <article class="card">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=1000&q=80" alt="3 BHK fully furnished mountain view" />
+            <div class="price-tag tag-blue">₹1.80 Cr</div>
+          </div>
+          <div class="card-body">
+            <h3>3 BHK Fully Furnished Mountain View</h3>
+            <div class="card-sub"><span class="gold-dot">✦</span> Higher floor • mountain facing • parking included</div>
+            <div class="action-row"><button class="small-btn">View Details <span>›</span></button></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1000&q=80" alt="2 BHK on 29th floor premium tower" />
+            <div class="price-tag tag-gold">₹1.25 Cr</div>
+          </div>
+          <div class="card-body">
+            <h3>2 BHK on 29th Floor Premium Tower</h3>
+            <div class="card-sub"><span class="gold-dot">✦</span> Premium tower • higher floor • with parking</div>
+            <div class="action-row"><button class="small-btn gold">With Parking <span>›</span></button></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=1000&q=80" alt="2 BHK Jodi in Barcelona D Wing" />
+            <div class="price-tag tag-red">₹3.60 Cr</div>
+          </div>
+          <div class="card-body">
+            <h3>2 BHK Jodi in Barcelona D Wing</h3>
+            <div class="card-sub"><span class="gold-dot">✦</span> Premium wing • jodi flat • 2 parking included</div>
+            <div class="action-row"><button class="small-btn">View Details <span>›</span></button></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title-row">
+        <div class="line"></div>
+        <h2 class="section-title">Budget-Friendly Options</h2>
+        <div class="line"></div>
+      </div>
+      <div class="cards-4">
+        <article class="mini-card">
+          <div class="mini-image">
+            <img src="https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=800&q=80" alt="BHK bank auction flat" />
+            <div class="price-tag tag-blue">₹55 Lakhs</div>
+          </div>
+          <div class="card-body">
+            <h4 class="mini-title">BHK Bank Auction Flat</h4>
+            <div class="mini-rule"></div>
+          </div>
+        </article>
+
+        <article class="mini-card">
+          <div class="mini-image">
+            <img src="https://images.unsplash.com/photo-1502672023488-70e25813eb80?auto=format&fit=crop&w=800&q=80" alt="1 BHK package deal" />
+            <div class="price-tag tag-gold">₹80 Lakhs</div>
+          </div>
+          <div class="card-body">
+            <h4 class="mini-title">1 BHK Package Deal</h4>
+            <div class="mini-rule"></div>
+          </div>
+        </article>
+
+        <article class="mini-card">
+          <div class="mini-image">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80" alt="BHK studio apartment" />
+            <div class="price-tag tag-blue">₹95 Lakhs</div>
+          </div>
+          <div class="card-body">
+            <h4 class="mini-title">BHK Studio Apartment</h4>
+            <div class="mini-rule"></div>
+          </div>
+        </article>
+
+        <article class="mini-card">
+          <div class="mini-image">
+            <img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=800&q=80" alt="BHK without parking" />
+            <div class="price-tag tag-blue">₹1 Cr</div>
+          </div>
+          <div class="card-body">
+            <h4 class="mini-title">BHK Without Parking</h4>
+            <div class="mini-rule"></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title-row">
+        <div class="line"></div>
+        <h2 class="section-title">Rental Options</h2>
+        <div class="line"></div>
+      </div>
+      <div class="cards-2">
+        <article class="rent-card">
+          <div class="rent-image">
+            <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1000&q=80" alt="2 BHK in Barcelona D Wing" />
+            <div class="price-tag tag-blue">₹45,000</div>
+          </div>
+          <div class="rent-title">2 BHK in Barcelona D Wing</div>
+        </article>
+
+        <article class="rent-card">
+          <div class="rent-image">
+            <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1000&q=80" alt="3 BHK in Barcelona D Wing" />
+            <div class="price-tag tag-blue">₹60,000</div>
+          </div>
+          <div class="rent-title">3 BHK in Barcelona D Wing</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" style="padding-bottom: 18px;">
+      <div class="section-title-row">
+        <div class="line"></div>
+        <h2 class="section-title">More Than Residential</h2>
+        <div class="line"></div>
+      </div>
+      <div class="services">
+        <article class="service-card">
+          <div class="service-icon">🏬</div>
+          <span>Commercial Shops</span>
+        </article>
+        <article class="service-card">
+          <div class="service-icon">🏭</div>
+          <span>Industrial Properties</span>
+        </article>
+        <article class="service-card">
+          <div class="service-icon">🏦</div>
+          <span>Bank Auction Deals</span>
+        </article>
+        <article class="service-card">
+          <div class="service-icon">💰</div>
+          <span>Investor Opportunities</span>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
