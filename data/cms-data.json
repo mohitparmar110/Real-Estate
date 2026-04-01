@@ -4,6 +4,24 @@
     "whatsapp": "917045002081",
     "waMsg": "Hello George, I am interested in one of your listings."
   },
-  "pages": [],
+  "pages": [
+    {
+      "id": "mnfzevu5tcn2p",
+      "title": "TEST",
+      "slug": "test",
+      "subtitle": "2bhk",
+      "desc": "TEST TEST",
+      "location": "Miraroad",
+      "announcement": "JP infra test",
+      "status": "published",
+      "bannerUrl": "https://raw.githubusercontent.com/mohitparmar110/Real-Estate/main/images/banner-1775044060287.jpg",
+      "seoTitle": "TEST",
+      "seoDesc": "TEST",
+      "keywords": "TEST",
+      "ogImage": "",
+      "updatedAt": "2026-04-01T11:47:57.485Z",
+      "createdAt": "2026-04-01T11:47:57.485Z"
+    }
+  ],
   "listings": []
 }
