@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prime Trust — Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0f172a;
+      --accent: #0284c7;
+      --accent-light: #e0f2fe;
+      --green: #16a34a;
+      --green-light: #dcfce7;
+      --red: #dc2626;
+      --red-light: #fee2e2;
+      --amber: #d97706;
+      --amber-light: #fef3c7;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --muted: #64748b;
+      --sidebar-w: 240px;
+    }
+
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+
+    /* ── SIDEBAR ── */
+    #sidebar {
+      width: var(--sidebar-w); background: var(--navy); color: white;
+      position: fixed; top: 0; left: 0; height: 100vh;
+      display: flex; flex-direction: column; z-index: 100; overflow-y: auto;
+      transition: transform 0.3s;
+    }
+    .sidebar-logo { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .sidebar-logo .logo-circle { width: 40px; height: 40px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; }
+    .sidebar-logo span { font-weight: 700; font-size: 15px; letter-spacing: 0.05em; }
+    .sidebar-badge { font-size: 10px; background: rgba(255,255,255,0.12); border-radius: 4px; padding: 2px 6px; margin-top: 4px; display: inline-block; color: rgba(255,255,255,0.7); }
+
+    nav { padding: 16px 0; flex: 1; }
+    nav a {
+      display: flex; align-items: center; gap: 10px; padding: 10px 20px;
+      color: rgba(255,255,255,0.65); font-size: 13px; font-weight: 500;
+      text-decoration: none; cursor: pointer; border-left: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    nav a:hover { color: white; background: rgba(255,255,255,0.06); }
+    nav a.active { color: white; background: rgba(2,132,199,0.2); border-left-color: var(--accent); }
+    nav a .icon { font-size: 16px; width: 20px; text-align: center; }
+
+    .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .sidebar-footer a { color: rgba(255,255,255,0.5); font-size: 12px; text-decoration: none; }
+    .sidebar-footer a:hover { color: white; }
+
+    /* ── MAIN ── */
+    #main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+    /* ── TOP BAR ── */
+    #topbar {
+      background: var(--card); border-bottom: 1px solid var(--border);
+      padding: 14px 32px; display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 50;
+    }
+    #topbar h1 { font-size: 16px; font-weight: 600; }
+    #topbar .breadcrumb { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    #save-all-btn {
+      background: var(--accent); color: white; border: none; padding: 9px 20px;
+      border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; gap: 6px; transition: all 0.2s;
+    }
+    #save-all-btn:hover { background: #0369a1; transform: translateY(-1px); }
+    #save-all-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    /* ── CONTENT ── */
+    #content { padding: 32px; flex: 1; }
+
+    .section { display: none; }
+    .section.active { display: block; }
+
+    /* ── LOGIN SCREEN ── */
+    #login-screen {
+      position: fixed; inset: 0; background: var(--navy);
+      display: flex; align-items: center; justify-content: center; z-index: 9999;
+    }
+    .login-box {
+      background: white; border-radius: 16px; padding: 40px; width: 360px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+    }
+    .login-box h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+    .login-box p { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+    .login-box input {
+      width: 100%; padding: 12px 16px; border: 1.5px solid var(--border);
+      border-radius: 8px; font-size: 14px; outline: none; font-family: inherit;
+    }
+    .login-box input:focus { border-color: var(--accent); }
+    .login-box button {
+      width: 100%; margin-top: 14px; padding: 13px; background: var(--accent);
+      color: white; border: none; border-radius: 8px; font-size: 14px;
+      font-weight: 600; cursor: pointer; font-family: inherit;
+    }
+    #login-error { color: var(--red); font-size: 13px; margin-top: 10px; display: none; }
+
+    /* ── CARDS ── */
+    .page-header { margin-bottom: 24px; }
+    .page-header h2 { font-size: 20px; font-weight: 700; }
+    .page-header p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+    .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .card-header h3 { font-size: 15px; font-weight: 600; }
+    .card-header .card-actions { display: flex; gap: 8px; }
+
+    /* ── FORM ELEMENTS ── */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .form-row.single { grid-template-columns: 1fr; }
+    .form-row.triple { grid-template-columns: 1fr 1fr 1fr; }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .field input, .field textarea, .field select {
+      padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 8px;
+      font-size: 14px; font-family: inherit; outline: none; background: var(--bg);
+      transition: border-color 0.2s; color: var(--text);
+    }
+    .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--accent); background: white; }
+    .field textarea { resize: vertical; min-height: 90px; }
+
+    /* ── IMAGE UPLOAD ── */
+    .image-upload-zone {
+      border: 2px dashed var(--border); border-radius: 10px; padding: 24px;
+      text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg);
+      position: relative;
+    }
+    .image-upload-zone:hover { border-color: var(--accent); background: var(--accent-light); }
+    .image-upload-zone.dragover { border-color: var(--accent); background: var(--accent-light); }
+    .image-upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .image-upload-zone .upload-icon { font-size: 28px; margin-bottom: 8px; }
+    .image-upload-zone p { font-size: 13px; color: var(--muted); }
+    .image-upload-zone .upload-hint { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+    .image-preview-wrap { position: relative; display: inline-block; margin-top: 12px; }
+    .image-preview-wrap img { width: 180px; height: 110px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); display: block; }
+    .image-preview-wrap .remove-img {
+      position: absolute; top: -8px; right: -8px; width: 22px; height: 22px;
+      background: var(--red); color: white; border-radius: 50%; border: none;
+      cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center;
+    }
+    .upload-progress { height: 4px; background: var(--border); border-radius: 2px; margin-top: 8px; overflow: hidden; display: none; }
+    .upload-progress-bar { height: 100%; background: var(--accent); border-radius: 2px; width: 0%; transition: width 0.3s; }
+    .upload-status { font-size: 12px; margin-top: 6px; display: none; }
+
+    /* ── LISTING CARDS ── */
+    .listing-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .listing-item {
+      border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .listing-item.hidden-item { opacity: 0.5; }
+    .listing-item-header {
+      background: var(--bg); padding: 14px 16px;
+      display: flex; align-items: center; justify-content: space-between; cursor: pointer;
+    }
+    .listing-item-header:hover { background: #f1f5f9; }
+    .listing-item-title { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .listing-item-body { padding: 20px; border-top: 1px solid var(--border); display: none; }
+    .listing-item-body.open { display: block; }
+    .listing-item-actions { display: flex; gap: 8px; }
+
+    /* ── BADGES ── */
+    .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+    .badge-blue { background: var(--accent-light); color: var(--accent); }
+    .badge-green { background: var(--green-light); color: var(--green); }
+    .badge-red { background: var(--red-light); color: var(--red); }
+    .badge-amber { background: var(--amber-light); color: var(--amber); }
+
+    /* ── BUTTONS ── */
+    .btn { padding: 8px 16px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; font-family: inherit; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px; }
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-primary:hover { background: #0369a1; }
+    .btn-success { background: var(--green); color: white; }
+    .btn-success:hover { background: #15803d; }
+    .btn-danger { background: var(--red-light); color: var(--red); border: 1px solid #fca5a5; }
+    .btn-danger:hover { background: var(--red); color: white; }
+    .btn-ghost { background: transparent; color: var(--muted); border: 1.5px solid var(--border); }
+    .btn-ghost:hover { background: var(--bg); color: var(--text); }
+    .btn-sm { padding: 5px 10px; font-size: 12px; }
+
+    /* ── TOGGLE ── */
+    .toggle-wrap { display: flex; align-items: center; gap: 10px; }
+    .toggle { position: relative; width: 38px; height: 21px; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; inset: 0; background: #cbd5e1; border-radius: 21px; cursor: pointer; transition: 0.2s; }
+    .toggle-slider::before { content: ''; position: absolute; width: 15px; height: 15px; left: 3px; top: 3px; background: white; border-radius: 50%; transition: 0.2s; }
+    .toggle input:checked + .toggle-slider { background: var(--green); }
+    .toggle input:checked + .toggle-slider::before { transform: translateX(17px); }
+    .toggle-label { font-size: 13px; color: var(--muted); }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed; bottom: 24px; right: 24px; background: var(--navy);
+      color: white; padding: 12px 20px; border-radius: 10px; font-size: 13px;
+      font-weight: 500; z-index: 9998; opacity: 0; transform: translateY(10px);
+      transition: all 0.3s; pointer-events: none;
+    }
+    #toast.show { opacity: 1; transform: translateY(0); }
+    #toast.success { background: var(--green); }
+    #toast.error { background: var(--red); }
+
+    /* ── STATS DASHBOARD ── */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+    .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+    .stat-card .stat-label { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .stat-card .stat-value { font-size: 26px; font-weight: 700; margin-top: 6px; }
+    .stat-card .stat-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    /* ── ADD LISTING BTN ── */
+    .add-listing-btn {
+      width: 100%; padding: 14px; border: 2px dashed var(--border); border-radius: 10px;
+      background: transparent; color: var(--muted); font-size: 14px; font-weight: 500;
+      cursor: pointer; font-family: inherit; transition: all 0.2s; display: flex;
+      align-items: center; justify-content: center; gap: 8px;
+    }
+    .add-listing-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+
+    /* ── WORKER CONFIG ── */
+    .config-box { background: #1e293b; color: #e2e8f0; border-radius: 10px; padding: 20px; font-family: monospace; font-size: 13px; line-height: 1.6; overflow-x: auto; }
+    .config-box .comment { color: #64748b; }
+    .config-box .key { color: #7dd3fc; }
+    .config-box .val { color: #86efac; }
+    .step-list { counter-reset: steps; list-style: none; }
+    .step-list li { counter-increment: steps; display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .step-list li:last-child { border-bottom: none; }
+    .step-list li::before { content: counter(steps); min-width: 28px; height: 28px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+    .step-list li .step-text { font-size: 14px; line-height: 1.6; }
+    .step-list li code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 12px; color: var(--accent); }
+    .step-list li strong { font-weight: 600; }
+
+    /* ── SECTION DIVIDER ── */
+    .section-divider { display: flex; align-items: center; gap: 12px; margin: 24px 0 20px; }
+    .section-divider::before, .section-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .section-divider span { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
+
+    @media (max-width: 900px) {
+      #sidebar { transform: translateX(-100%); }
+      #sidebar.open { transform: translateX(0); }
+      #main { margin-left: 0; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .form-row.triple { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+      <div style="width:42px;height:42px;background:#0f172a;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:16px;">PT</div>
+      <div>
+        <div style="font-weight:700;font-size:14px;">Prime Trust</div>
+        <div style="font-size:12px;color:#64748b;">Admin Panel</div>
+      </div>
+    </div>
+    <h2>Welcome Back</h2>
+    <p>Enter your admin password to manage the website.</p>
+    <div class="field">
+      <label>Worker API URL</label>
+      <input type="url" id="worker-url-input" placeholder="https://prime-trust-worker.YOUR_NAME.workers.dev" value="">
+    </div>
+    <div class="field" style="margin-top:12px;">
+      <label>Admin Password</label>
+      <input type="password" id="password-input" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button onclick="doLogin()">Sign In →</button>
+    <div id="login-error">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="sidebar-logo">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+      <div class="logo-circle">PT</div>
+      <span>Prime Trust</span>
+    </div>
+    <div class="sidebar-badge">Admin Panel</div>
+  </div>
+  <nav>
+    <a onclick="showSection('dashboard')" class="active"><span class="icon">📊</span>Dashboard</a>
+    <a onclick="showSection('hero')"><span class="icon">🏠</span>Hero & Banner</a>
+    <a onclick="showSection('about')"><span class="icon">👤</span>About / Founder</a>
+    <a onclick="showSection('properties')"><span class="icon">🏢</span>Properties</a>
+    <a onclick="showSection('vehicles')"><span class="icon">🚗</span>Vehicles</a>
+    <div style="padding:8px 20px;font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.1em;margin-top:8px;">JP Infra</div>
+    <a onclick="showSection('jp-featured')"><span class="icon">⭐</span>Featured Listings</a>
+    <a onclick="showSection('jp-budget')"><span class="icon">💰</span>Budget Options</a>
+    <a onclick="showSection('jp-rentals')"><span class="icon">🔑</span>Rentals</a>
+    <div style="padding:8px 20px;font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.1em;margin-top:8px;">Settings</div>
+    <a onclick="showSection('site-settings')"><span class="icon">⚙️</span>Site Settings</a>
+    <a onclick="showSection('extra-pages')"><span class="icon">📄</span>Extra Pages</a>
+    <a onclick="showSection('setup')"><span class="icon">🔧</span>Setup Guide</a>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="../index.html" target="_blank">← View Live Site</a>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+  <div id="topbar">
+    <div>
+      <div id="topbar-title" class="font-600" style="font-weight:600;">Dashboard</div>
+      <div class="breadcrumb" id="topbar-breadcrumb">Prime Trust Admin</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <span id="save-status" style="font-size:12px;color:#64748b;"></span>
+      <button id="save-all-btn" onclick="saveAll()">💾 Save Changes</button>
+    </div>
+  </div>
+
+  <div id="content">
+
+    <!-- ═══════════════════════════════ DASHBOARD ═══════════════════════════════ -->
+    <div class="section active" id="sec-dashboard">
+      <div class="page-header">
+        <h2>Dashboard</h2>
+        <p>Overview of your website content</p>
+      </div>
+      <div class="stats-grid" id="stats-grid"></div>
+      <div class="card">
+        <div class="card-header"><h3>🚀 Quick Actions</h3></div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+          <button class="btn btn-primary" onclick="showSection('properties')">＋ Add Property</button>
+          <button class="btn btn-primary" onclick="showSection('vehicles')">＋ Add Vehicle</button>
+          <button class="btn btn-primary" onclick="showSection('jp-featured')">＋ Add JP Listing</button>
+          <button class="btn btn-ghost" onclick="showSection('hero')">✏️ Edit Banner</button>
+          <button class="btn btn-ghost" onclick="showSection('about')">✏️ Edit About</button>
+          <button class="btn btn-ghost" onclick="window.open('../index.html','_blank')">👁 View Site</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════ HERO & BANNER ═══════════════════════════════ -->
+    <div class="section" id="sec-hero">
+      <div class="page-header"><h2>Hero & Banner</h2><p>Update the main page heading and background image</p></div>
+      <div class="card">
+        <div class="card-header"><h3>🖼 Background Banner Image</h3></div>
+        <div class="form-row single">
+          <div class="field">
+            <label>Current Banner URL</label>
+            <input type="url" id="hero-banner-url" placeholder="https://...">
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Or upload a new banner image (recommended: 2000×1200px, JPG):</p>
+        <div id="banner-upload-zone" class="image-upload-zone">
+          <input type="file" accept="image/*" onchange="handleImageUpload(this,'hero-banner-url','banner-preview','banner-status','banner-progress')">
+          <div class="upload-icon">🏞️</div>
+          <p>Click to upload new banner</p>
+          <p class="upload-hint">JPG, PNG, WEBP · Max 5MB</p>
+        </div>
+        <div class="upload-progress" id="banner-progress"><div class="upload-progress-bar"></div></div>
+        <div class="upload-status" id="banner-status"></div>
+        <div id="banner-preview"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>✏️ Hero Text</h3></div>
+        <div class="form-row">
+          <div class="field"><label>Heading Line 1</label><input type="text" id="hero-h1" placeholder="Expertise You Can Bank On."></div>
+          <div class="field"><label>Heading Line 2</label><input type="text" id="hero-h2" placeholder="Real Estate You Can Trust."></div>
+        </div>
+        <div class="form-row single">
+          <div class="field"><label>Subtext</label><textarea id="hero-subtext" rows="2"></textarea></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════ ABOUT ═══════════════════════════════ -->
+    <div class="section" id="sec-about">
+      <div class="page-header"><h2>About / Founder</h2><p>Edit George Cherian's profile and photo</p></div>
+      <div class="card">
+        <div class="card-header"><h3>📸 Profile Photo</h3></div>
+        <div class="form-row single">
+          <div class="field">
+            <label>Photo URL</label>
+            <input type="url" id="about-photo-url" placeholder="https://...">
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Or upload a new photo:</p>
+        <div class="image-upload-zone">
+          <input type="file" accept="image/*" onchange="handleImageUpload(this,'about-photo-url','about-photo-preview','about-photo-status','about-photo-progress')">
+          <div class="upload-icon">👤</div>
+          <p>Click to upload profile photo</p>
+          <p class="upload-hint">JPG, PNG · Max 5MB · Portrait orientation preferred</p>
+        </div>
+        <div class="upload-progress" id="about-photo-progress"><div class="upload-progress-bar"></div></div>
+        <div class="upload-status" id="about-photo-status"></div>
+        <div id="about-photo-preview"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>✏️ About Content</h3></div>
+        <div class="form-row">
+          <div class="field"><label>Full Name</label><input type="text" id="about-name" placeholder="George Cherian"></div>
+          <div class="field"><label>Title / Designation</label><input type="text" id="about-title" placeholder="Founder – Prime Trust Realtor"></div>
+        </div>
+        <div class="form-row single">
+          <div class="field"><label>Years of Experience</label><input type="text" id="about-years" placeholder="18" style="max-width:120px;"></div>
+        </div>
+        <div class="section-divider"><span>Bio Paragraphs</span></div>
+        <div id="about-paragraphs"></div>
+        <div class="form-row single" style="margin-top:12px;">
+          <div class="field"><label>Closing Quote</label><textarea id="about-quote" rows="2"></textarea></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════ PROPERTIES ═══════════════════════════════ -->
+    <div class="section" id="sec-properties">
+      <div class="page-header"><h2>Featured Properties</h2><p>Main site property listings (Dubai, Mumbai, etc.)</p></div>
+      <div id="properties-list" class="listing-grid"></div>
+      <button class="add-listing-btn" onclick="addListing('featured_properties')">＋ Add New Property</button>
+    </div>
+
+    <!-- ═══════════════════════════════ VEHICLES ═══════════════════════════════ -->
+    <div class="section" id="sec-vehicles">
+      <div class="page-header"><h2>Pre-Owned Vehicles</h2><p>Manage vehicle listings</p></div>
+      <div id="vehicles-list" class="listing-grid"></div>
+      <button class="add-listing-btn" onclick="addListing('vehicles')">＋ Add New Vehicle</button>
+    </div>
+
+    <!-- ═══════════════════════════════ JP FEATURED ═══════════════════════════════ -->
+    <div class="section" id="sec-jp-featured">
+      <div class="page-header"><h2>JP Infra — Featured Listings</h2><p>3 BHK, 2 BHK, Jodi flats etc.</p></div>
+      <div id="jp-featured-list" class="listing-grid"></div>
+      <button class="add-listing-btn" onclick="addListing('jp_infra.featured_listings')">＋ Add Featured Listing</button>
+    </div>
+
+    <!-- ═══════════════════════════════ JP BUDGET ═══════════════════════════════ -->
+    <div class="section" id="sec-jp-budget">
+      <div class="page-header"><h2>JP Infra — Budget Options</h2><p>Auction deals, starter flats</p></div>
+      <div id="jp-budget-list" class="listing-grid"></div>
+      <button class="add-listing-btn" onclick="addListing('jp_infra.budget_listings')">＋ Add Budget Listing</button>
+    </div>
+
+    <!-- ═══════════════════════════════ JP RENTALS ═══════════════════════════════ -->
+    <div class="section" id="sec-jp-rentals">
+      <div class="page-header"><h2>JP Infra — Rental Listings</h2><p>Barcelona D Wing and other rentals</p></div>
+      <div id="jp-rentals-list" class="listing-grid"></div>
+      <button class="add-listing-btn" onclick="addListing('jp_infra.rental_listings')">＋ Add Rental</button>
+    </div>
+
+    <!-- ═══════════════════════════════ SITE SETTINGS ═══════════════════════════════ -->
+    <div class="section" id="sec-site-settings">
+      <div class="page-header"><h2>Site Settings</h2><p>Contact info, phone, email</p></div>
+      <div class="card">
+        <div class="form-row">
+          <div class="field"><label>Phone Number</label><input type="text" id="site-phone" placeholder="+91 7045002081"></div>
+          <div class="field"><label>WhatsApp Number</label><input type="text" id="site-whatsapp" placeholder="917045002081"></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label>Email Address</label><input type="email" id="site-email"></div>
+          <div class="field"><label>Location / Address</label><input type="text" id="site-address"></div>
+        </div>
+        <div class="form-row single">
+          <div class="field"><label>Top Announcement Bar Text</label><input type="text" id="site-tagline"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════ EXTRA PAGES ═══════════════════════════════ -->
+    <div class="section" id="sec-extra-pages">
+      <div class="page-header"><h2>Extra Pages</h2><p>Enable up to 2 additional navigation pages</p></div>
+      <div id="extra-pages-list"></div>
+    </div>
+
+    <!-- ═══════════════════════════════ SETUP GUIDE ═══════════════════════════════ -->
+    <div class="section" id="sec-setup">
+      <div class="page-header"><h2>Setup Guide</h2><p>One-time Cloudflare setup — takes about 20 minutes</p></div>
+      <div class="card">
+        <div class="card-header"><h3>⚙️ Step-by-Step Cloudflare Setup</h3></div>
+        <ul class="step-list">
+          <li><div class="step-text"><strong>Create a GitHub repo</strong> — Upload all your website files (index.html, pages/, admin/, cms-data.json). Make it public or private — both work.</div></li>
+          <li><div class="step-text"><strong>Connect to Cloudflare Pages</strong> — Go to <code>dash.cloudflare.com</code> → Workers & Pages → Create → Pages → Connect to Git → Select your repo. Build command: leave blank. Output dir: <code>/</code> (root). Deploy!</div></li>
+          <li><div class="step-text"><strong>Create R2 Bucket for images</strong> — In Cloudflare dashboard → R2 → Create Bucket → name it <code>prime-trust-images</code>. Then go to Settings → Public Access → Enable. Copy the public domain (e.g. <code>pub-xxxx.r2.dev</code>).</div></li>
+          <li><div class="step-text"><strong>Create KV Namespace</strong> — Workers & Pages → KV → Create Namespace → name it <code>PRIME_TRUST_KV</code>. Copy the namespace ID.</div></li>
+          <li><div class="step-text"><strong>Deploy the Worker</strong> — Install Wrangler: <code>npm install -g wrangler</code>. Then <code>wrangler login</code>. Paste KV namespace ID into <code>wrangler.toml</code>. Run <code>wrangler deploy</code>.</div></li>
+          <li><div class="step-text"><strong>Set Admin Password</strong> — Run: <code>wrangler secret put ADMIN_PASSWORD</code> and type your password. Keep this safe!</div></li>
+          <li><div class="step-text"><strong>Upload CMS data</strong> — Come back to this admin panel. Enter your Worker URL + password. Go to any section and click Save Changes. The site will start reading live data!</div></li>
+          <li><div class="step-text"><strong>Update Worker URL in admin/index.html</strong> — Open admin/index.html and set the default Worker URL so you don't have to type it every time.</div></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>📋 wrangler.toml Template</h3></div>
+        <div class="config-box">
+          <div><span class="comment"># wrangler.toml</span></div>
+          <div><span class="key">name</span> = <span class="val">"prime-trust-worker"</span></div>
+          <div><span class="key">main</span> = <span class="val">"functions/worker.js"</span></div>
+          <div><span class="key">compatibility_date</span> = <span class="val">"2024-01-01"</span></div>
+          <br>
+          <div><span class="comment">[[kv_namespaces]]</span></div>
+          <div><span class="key">binding</span> = <span class="val">"PRIME_TRUST_KV"</span></div>
+          <div><span class="key">id</span> = <span class="val">"YOUR_KV_ID_HERE"</span></div>
+          <br>
+          <div><span class="comment">[[r2_buckets]]</span></div>
+          <div><span class="key">binding</span> = <span class="val">"PRIME_TRUST_IMAGES"</span></div>
+          <div><span class="key">bucket_name</span> = <span class="val">"prime-trust-images"</span></div>
+        </div>
+      </div>
+      <div class="card" style="background:#fef3c7;border-color:#fcd34d;">
+        <strong>💡 Image Hosting Note:</strong> After enabling R2 public access, update the <code>publicUrl</code> in <code>functions/worker.js</code> to use your R2 bucket domain instead of the placeholder.
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<div id="toast"></div>
+
+<script>
+// ─── STATE ──────────────────────────────────────────────────────────────────
+let CMS = null;
+let WORKER_URL = '';
+let ADMIN_PASS = '';
+let unsaved = false;
+
+// ─── LOGIN ──────────────────────────────────────────────────────────────────
+async function doLogin() {
+  const url = document.getElementById('worker-url-input').value.trim().replace(/\/$/, '');
+  const pass = document.getElementById('password-input').value;
+  if (!url || !pass) { showLoginError('Please fill in both fields.'); return; }
+
+  WORKER_URL = url;
+  ADMIN_PASS = pass;
+
+  try {
+    const r = await fetch(WORKER_URL + '/api/cms-data', { headers: { 'X-Admin-Password': ADMIN_PASS } });
+    if (r.ok) {
+      CMS = await r.json();
+    } else {
+      // First time — load local fallback
+      const local = await fetch('../cms-data.json');
+      if (local.ok) { CMS = await local.json(); }
+      else { CMS = getDefaultCMS(); }
+    }
+    document.getElementById('login-screen').style.display = 'none';
+    renderAll();
+  } catch (e) {
+    // Worker not set up yet — use local file
+    try {
+      const local = await fetch('../cms-data.json');
+      CMS = local.ok ? await local.json() : getDefaultCMS();
+      document.getElementById('login-screen').style.display = 'none';
+      renderAll();
+      showToast('Working in local mode — Worker not connected yet', 'error');
+    } catch { showLoginError('Cannot connect. Check the Worker URL.'); }
+  }
+}
+
+function showLoginError(msg) {
+  const el = document.getElementById('login-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+// ─── NAVIGATION ─────────────────────────────────────────────────────────────
+const sectionMeta = {
+  'dashboard':    { title: 'Dashboard',             breadcrumb: 'Prime Trust Admin' },
+  'hero':         { title: 'Hero & Banner',          breadcrumb: 'Main Site' },
+  'about':        { title: 'About / Founder',        breadcrumb: 'Main Site' },
+  'properties':   { title: 'Featured Properties',    breadcrumb: 'Main Site' },
+  'vehicles':     { title: 'Pre-Owned Vehicles',     breadcrumb: 'Main Site' },
+  'jp-featured':  { title: 'JP Featured Listings',   breadcrumb: 'JP Infra' },
+  'jp-budget':    { title: 'JP Budget Options',      breadcrumb: 'JP Infra' },
+  'jp-rentals':   { title: 'JP Rental Listings',     breadcrumb: 'JP Infra' },
+  'site-settings':{ title: 'Site Settings',          breadcrumb: 'Settings' },
+  'extra-pages':  { title: 'Extra Pages',            breadcrumb: 'Settings' },
+  'setup':        { title: 'Setup Guide',            breadcrumb: 'Help' },
+};
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  document.querySelector(`nav a[onclick="showSection('${id}')"]`)?.classList.add('active');
+  const meta = sectionMeta[id] || { title: id, breadcrumb: '' };
+  document.getElementById('topbar-title').textContent = meta.title;
+  document.getElementById('topbar-breadcrumb').textContent = meta.breadcrumb;
+  if (id === 'dashboard') renderDashboard();
+}
+
+// ─── RENDER ALL ──────────────────────────────────────────────────────────────
+function renderAll() {
+  renderDashboard();
+  renderHero();
+  renderAbout();
+  renderListings('featured_properties', 'properties-list', 'property');
+  renderListings('vehicles', 'vehicles-list', 'vehicle');
+  renderListings('jp_infra.featured_listings', 'jp-featured-list', 'jp-listing');
+  renderListings('jp_infra.budget_listings', 'jp-budget-list', 'jp-listing');
+  renderListings('jp_infra.rental_listings', 'jp-rentals-list', 'jp-listing');
+  renderSiteSettings();
+  renderExtraPages();
+}
+
+// ─── DASHBOARD ───────────────────────────────────────────────────────────────
+function renderDashboard() {
+  if (!CMS) return;
+  const jp = CMS.jp_infra || {};
+  const stats = [
+    { label: 'Properties', value: (CMS.featured_properties||[]).filter(p=>p.visible).length, sub: 'active listings', icon: '🏢' },
+    { label: 'Vehicles', value: (CMS.vehicles||[]).filter(v=>v.visible).length, sub: 'active listings', icon: '🚗' },
+    { label: 'JP Listings', value: [...(jp.featured_listings||[]),...(jp.budget_listings||[]),...(jp.rental_listings||[])].filter(l=>l.visible).length, sub: 'active listings', icon: '🏗️' },
+    { label: 'Extra Pages', value: (CMS.extra_pages||[]).filter(p=>p.enabled).length, sub: 'active pages', icon: '📄' },
+  ];
+  document.getElementById('stats-grid').innerHTML = stats.map(s => `
+    <div class="stat-card">
+      <div class="stat-label">${s.icon} ${s.label}</div>
+      <div class="stat-value">${s.value}</div>
+      <div class="stat-sub">${s.sub}</div>
+    </div>`).join('');
+}
+
+// ─── HERO ────────────────────────────────────────────────────────────────────
+function renderHero() {
+  if (!CMS) return;
+  const h = CMS.hero || {};
+  document.getElementById('hero-banner-url').value = h.banner_image_url || '';
+  document.getElementById('hero-h1').value = h.heading_line1 || '';
+  document.getElementById('hero-h2').value = h.heading_line2 || '';
+  document.getElementById('hero-subtext').value = h.subtext || '';
+  if (h.banner_image_url) showPreview('banner-preview', h.banner_image_url, 'hero-banner-url');
+}
+
+function collectHero() {
+  CMS.hero.banner_image_url = document.getElementById('hero-banner-url').value;
+  CMS.hero.heading_line1 = document.getElementById('hero-h1').value;
+  CMS.hero.heading_line2 = document.getElementById('hero-h2').value;
+  CMS.hero.subtext = document.getElementById('hero-subtext').value;
+}
+
+// ─── ABOUT ───────────────────────────────────────────────────────────────────
+function renderAbout() {
+  if (!CMS) return;
+  const a = CMS.about || {};
+  document.getElementById('about-name').value = a.name || '';
+  document.getElementById('about-title').value = a.title || '';
+  document.getElementById('about-years').value = a.years_experience || '';
+  document.getElementById('about-quote').value = a.quote || '';
+  document.getElementById('about-photo-url').value = a.photo_url || '';
+  if (a.photo_url) showPreview('about-photo-preview', a.photo_url, 'about-photo-url');
+
+  const container = document.getElementById('about-paragraphs');
+  container.innerHTML = (a.paragraphs || []).map((p, i) => `
+    <div class="field" style="margin-bottom:12px;">
+      <label>Paragraph ${i+1}</label>
+      <textarea id="about-para-${i}" rows="3">${p}</textarea>
+    </div>`).join('');
+}
+
+function collectAbout() {
+  CMS.about.name = document.getElementById('about-name').value;
+  CMS.about.title = document.getElementById('about-title').value;
+  CMS.about.years_experience = document.getElementById('about-years').value;
+  CMS.about.quote = document.getElementById('about-quote').value;
+  CMS.about.photo_url = document.getElementById('about-photo-url').value;
+  CMS.about.paragraphs = Array.from(document.querySelectorAll('[id^="about-para-"]')).map(t => t.value);
+}
+
+// ─── LISTINGS ────────────────────────────────────────────────────────────────
+function getNestedArray(path) {
+  const parts = path.split('.');
+  let obj = CMS;
+  for (const p of parts) obj = obj[p];
+  return Array.isArray(obj) ? obj : [];
+}
+function setNestedArray(path, arr) {
+  const parts = path.split('.');
+  let obj = CMS;
+  for (let i = 0; i < parts.length - 1; i++) obj = obj[parts[i]];
+  obj[parts[parts.length - 1]] = arr;
+}
+
+function renderListings(path, containerId, type) {
+  const arr = getNestedArray(path);
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = arr.map((item, idx) => renderListingItem(item, idx, path, type)).join('');
+}
+
+function renderListingItem(item, idx, path, type) {
+  const vis = item.visible !== false;
+  return `
+  <div class="listing-item ${vis ? '' : 'hidden-item'}" id="item-${path}-${idx}">
+    <div class="listing-item-header" onclick="toggleItem('${path}',${idx})">
+      <div class="listing-item-title">
+        <span>${vis ? '✅' : '⏸️'}</span>
+        <span>${item.title || 'Untitled'}</span>
+        ${item.price ? `<span class="badge badge-green">${item.price}</span>` : ''}
+        ${item.status ? `<span class="badge badge-blue">${item.status}</span>` : ''}
+      </div>
+      <div class="listing-item-actions">
+        <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();toggleVisible('${path}',${idx})">${vis ? 'Hide' : 'Show'}</button>
+        <button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteListing('${path}',${idx})">✕</button>
+        <span style="color:#64748b;">▾</span>
+      </div>
+    </div>
+    <div class="listing-item-body" id="body-${path}-${idx}">
+      ${renderListingForm(item, idx, path)}
+    </div>
+  </div>`;
+}
+
+function renderListingForm(item, idx, path) {
+  const uid = `${path}-${idx}`;
+  const imgPreviewId = `img-prev-${uid}`;
+  const imgUrlId = `img-url-${uid}`;
+  const progressId = `img-prog-${uid}`;
+  const statusId = `img-stat-${uid}`;
+
+  return `
+  <div class="form-row">
+    <div class="field"><label>Title</label><input type="text" id="title-${uid}" value="${esc(item.title||'')}"></div>
+    <div class="field"><label>Price / Status</label><input type="text" id="price-${uid}" value="${esc(item.price||item.price_label||item.status||'')}"></div>
+  </div>
+  <div class="form-row">
+    <div class="field"><label>Location</label><input type="text" id="location-${uid}" value="${esc(item.location||item.location_badge||'')}"></div>
+    <div class="field"><label>Tags (comma separated)</label><input type="text" id="tags-${uid}" value="${esc((item.tags||[]).join(', '))}"></div>
+  </div>
+  <div class="form-row single">
+    <div class="field"><label>Description</label><textarea id="desc-${uid}">${esc(item.description||'')}</textarea></div>
+  </div>
+  <div class="form-row single">
+    <div class="field"><label>WhatsApp Message</label><textarea id="wa-${uid}" rows="2">${esc(item.whatsapp_message||'')}</textarea></div>
+  </div>
+
+  <div class="section-divider"><span>Property Image</span></div>
+  <div class="form-row single">
+    <div class="field"><label>Image URL</label><input type="url" id="${imgUrlId}" value="${esc(item.image_url||'')}" oninput="showPreview('${imgPreviewId}',this.value,'${imgUrlId}')"></div>
+  </div>
+  <div class="image-upload-zone" style="margin-bottom:12px;">
+    <input type="file" accept="image/*" onchange="handleImageUpload(this,'${imgUrlId}','${imgPreviewId}','${statusId}','${progressId}')">
+    <div class="upload-icon">📸</div>
+    <p>Click or drag to upload property image</p>
+    <p class="upload-hint">JPG, PNG, WEBP · Max 5MB · Recommended: 1600×900px</p>
+  </div>
+  <div class="upload-progress" id="${progressId}"><div class="upload-progress-bar"></div></div>
+  <div class="upload-status" id="${statusId}"></div>
+  <div id="${imgPreviewId}">${item.image_url ? `<div class="image-preview-wrap"><img src="${esc(item.image_url)}" onerror="this.style.display='none'"><button class="remove-img" onclick="clearImg('${imgUrlId}','${imgPreviewId}')">✕</button></div>` : ''}</div>
+
+  <div style="margin-top:16px;display:flex;gap:10px;align-items:center;">
+    <button class="btn btn-success" onclick="saveListingItem('${path}',${idx})">✓ Apply Changes</button>
+    <label class="toggle-wrap">
+      <label class="toggle"><input type="checkbox" id="vis-${uid}" ${item.visible !== false ? 'checked' : ''} onchange="toggleVisible('${path}',${idx})"><span class="toggle-slider"></span></label>
+      <span class="toggle-label">Visible on website</span>
+    </label>
+  </div>`;
+}
+
+function toggleItem(path, idx) {
+  const body = document.getElementById(`body-${path}-${idx}`);
+  body.classList.toggle('open');
+}
+
+function toggleVisible(path, idx) {
+  const arr = getNestedArray(path);
+  arr[idx].visible = !arr[idx].visible;
+  setNestedArray(path, arr);
+  const containerId = { 'featured_properties': 'properties-list', 'vehicles': 'vehicles-list', 'jp_infra.featured_listings': 'jp-featured-list', 'jp_infra.budget_listings': 'jp-budget-list', 'jp_infra.rental_listings': 'jp-rentals-list' }[path];
+  renderListings(path, containerId);
+  markUnsaved();
+}
+
+function saveListingItem(path, idx) {
+  const uid = `${path}-${idx}`;
+  const arr = getNestedArray(path);
+  const item = arr[idx];
+  item.title = document.getElementById(`title-${uid}`)?.value || item.title;
+  const priceVal = document.getElementById(`price-${uid}`)?.value || '';
+  if ('price' in item) item.price = priceVal;
+  else if ('price_label' in item) item.price_label = priceVal;
+  else if ('status' in item) item.status = priceVal;
+  else item.price = priceVal;
+  item.location = document.getElementById(`location-${uid}`)?.value || '';
+  item.tags = (document.getElementById(`tags-${uid}`)?.value || '').split(',').map(t => t.trim()).filter(Boolean);
+  item.description = document.getElementById(`desc-${uid}`)?.value || '';
+  item.whatsapp_message = document.getElementById(`wa-${uid}`)?.value || '';
+  item.image_url = document.getElementById(`img-url-${uid}`)?.value || '';
+  item.visible = document.getElementById(`vis-${uid}`)?.checked !== false;
+  setNestedArray(path, arr);
+  markUnsaved();
+  showToast('Changes applied — click Save Changes to publish', 'success');
+}
+
+function deleteListing(path, idx) {
+  if (!confirm('Delete this listing?')) return;
+  const arr = getNestedArray(path);
+  arr.splice(idx, 1);
+  setNestedArray(path, arr);
+  const containerId = { 'featured_properties': 'properties-list', 'vehicles': 'vehicles-list', 'jp_infra.featured_listings': 'jp-featured-list', 'jp_infra.budget_listings': 'jp-budget-list', 'jp_infra.rental_listings': 'jp-rentals-list' }[path];
+  renderListings(path, containerId);
+  markUnsaved();
+}
+
+function addListing(path) {
+  const arr = getNestedArray(path);
+  const newItem = {
+    id: 'new-' + Date.now(),
+    title: 'New Listing',
+    price: 'Contact for Price',
+    location: 'JP North, Mira Road',
+    location_badge: 'MUMBAI',
+    tags: [],
+    description: 'Enter description here.',
+    image_url: '',
+    whatsapp_message: 'Hello George, I am interested in this property. Please share more details.',
+    visible: true,
+  };
+  arr.unshift(newItem);
+  setNestedArray(path, arr);
+  const containerId = { 'featured_properties': 'properties-list', 'vehicles': 'vehicles-list', 'jp_infra.featured_listings': 'jp-featured-list', 'jp_infra.budget_listings': 'jp-budget-list', 'jp_infra.rental_listings': 'jp-rentals-list' }[path];
+  renderListings(path, containerId);
+  // Auto-open the new item
+  document.getElementById(`body-${path}-0`)?.classList.add('open');
+  markUnsaved();
+}
+
+// ─── SITE SETTINGS ───────────────────────────────────────────────────────────
+function renderSiteSettings() {
+  if (!CMS) return;
+  const s = CMS.site || {};
+  document.getElementById('site-phone').value = s.phone || '';
+  document.getElementById('site-whatsapp').value = s.whatsapp || '';
+  document.getElementById('site-email').value = s.email || '';
+  document.getElementById('site-address').value = s.address || '';
+  document.getElementById('site-tagline').value = s.tagline || '';
+}
+function collectSiteSettings() {
+  CMS.site.phone = document.getElementById('site-phone').value;
+  CMS.site.whatsapp = document.getElementById('site-whatsapp').value;
+  CMS.site.email = document.getElementById('site-email').value;
+  CMS.site.address = document.getElementById('site-address').value;
+  CMS.site.tagline = document.getElementById('site-tagline').value;
+}
+
+// ─── EXTRA PAGES ─────────────────────────────────────────────────────────────
+function renderExtraPages() {
+  if (!CMS) return;
+  const container = document.getElementById('extra-pages-list');
+  container.innerHTML = (CMS.extra_pages || []).map((p, i) => `
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-header">
+        <h3>Page ${i + 1} ${p.enabled ? '<span class="badge badge-green">Enabled</span>' : '<span class="badge badge-amber">Disabled</span>'}</h3>
+        <label class="toggle-wrap">
+          <label class="toggle"><input type="checkbox" id="ep-en-${i}" ${p.enabled ? 'checked' : ''} onchange="toggleExtraPage(${i})"><span class="toggle-slider"></span></label>
+          <span class="toggle-label">Active</span>
+        </label>
+      </div>
+      <div class="form-row triple">
+        <div class="field"><label>Nav Label</label><input type="text" id="ep-label-${i}" value="${esc(p.nav_label||'')}"></div>
+        <div class="field"><label>URL / Path</label><input type="text" id="ep-url-${i}" value="${esc(p.url||'')}"></div>
+        <div class="field"><label>Footer Label</label><input type="text" id="ep-footer-${i}" value="${esc(p.footer_label||'')}"></div>
+      </div>
+      <button class="btn btn-success btn-sm" onclick="saveExtraPage(${i})">✓ Apply</button>
+    </div>`).join('');
+}
+function toggleExtraPage(i) {
+  CMS.extra_pages[i].enabled = document.getElementById(`ep-en-${i}`).checked;
+  renderExtraPages(); markUnsaved();
+}
+function saveExtraPage(i) {
+  CMS.extra_pages[i].nav_label = document.getElementById(`ep-label-${i}`).value;
+  CMS.extra_pages[i].url = document.getElementById(`ep-url-${i}`).value;
+  CMS.extra_pages[i].footer_label = document.getElementById(`ep-footer-${i}`).value;
+  markUnsaved(); showToast('Page settings applied', 'success');
+}
+
+// ─── IMAGE UPLOAD ────────────────────────────────────────────────────────────
+async function handleImageUpload(input, urlFieldId, previewId, statusId, progressId) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { showUploadStatus(statusId, 'File too large (max 5MB)', 'error'); return; }
+
+  const progressEl = document.getElementById(progressId);
+  const progressBar = progressEl?.querySelector('.upload-progress-bar');
+  const statusEl = document.getElementById(statusId);
+
+  if (progressEl) { progressEl.style.display = 'block'; }
+  if (progressBar) { progressBar.style.width = '30%'; }
+  showUploadStatus(statusId, '⏳ Uploading image...', 'info');
+
+  // If no Worker URL, offer local object URL as preview only
+  if (!WORKER_URL) {
+    const localUrl = URL.createObjectURL(file);
+    document.getElementById(urlFieldId).value = '(uploaded - save file to server)';
+    showPreview(previewId, localUrl, urlFieldId);
+    if (progressBar) progressBar.style.width = '100%';
+    showUploadStatus(statusId, '⚠️ Preview only — Worker not connected. Set up Worker to store permanently.', 'warn');
+    markUnsaved();
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+    formData.append('image', file);
+    if (progressBar) progressBar.style.width = '60%';
+
+    const res = await fetch(WORKER_URL + '/api/upload-image', {
+      method: 'POST',
+      headers: { 'X-Admin-Password': ADMIN_PASS },
+      body: formData,
+    });
+
+    const data = await res.json();
+    if (progressBar) progressBar.style.width = '100%';
+
+    if (data.success && data.url) {
+      document.getElementById(urlFieldId).value = data.url;
+      showPreview(previewId, data.url, urlFieldId);
+      showUploadStatus(statusId, '✅ Uploaded successfully!', 'success');
+      markUnsaved();
+    } else {
+      showUploadStatus(statusId, '❌ Upload failed: ' + (data.error || 'Unknown error'), 'error');
+    }
+  } catch (e) {
+    showUploadStatus(statusId, '❌ Network error: ' + e.message, 'error');
+  }
+}
+
+function showUploadStatus(id, msg, type) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'block';
+  el.textContent = msg;
+  el.style.color = type === 'success' ? 'var(--green)' : type === 'error' ? 'var(--red)' : type === 'warn' ? 'var(--amber)' : 'var(--muted)';
+}
+
+function showPreview(previewId, url, urlFieldId) {
+  const container = document.getElementById(previewId);
+  if (!container || !url) return;
+  container.innerHTML = `
+    <div class="image-preview-wrap">
+      <img src="${esc(url)}" onerror="this.style.display='none'">
+      <button class="remove-img" onclick="clearImg('${urlFieldId}','${previewId}')">✕</button>
+    </div>`;
+}
+
+function clearImg(urlFieldId, previewId) {
+  document.getElementById(urlFieldId).value = '';
+  document.getElementById(previewId).innerHTML = '';
+  markUnsaved();
+}
+
+// ─── SAVE ALL ────────────────────────────────────────────────────────────────
+async function saveAll() {
+  // Collect all field values
+  collectHero();
+  collectAbout();
+  collectSiteSettings();
+
+  const btn = document.getElementById('save-all-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Saving…';
+
+  if (!WORKER_URL) {
+    // Download as file fallback
+    const blob = new Blob([JSON.stringify(CMS, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = 'cms-data.json'; a.click();
+    btn.disabled = false; btn.textContent = '💾 Save Changes';
+    showToast('Downloaded cms-data.json — upload to GitHub to publish', 'success');
+    return;
+  }
+
+  try {
+    const res = await fetch(WORKER_URL + '/api/cms-data', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Password': ADMIN_PASS },
+      body: JSON.stringify(CMS, null, 2),
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('✅ Website updated live!', 'success');
+      unsaved = false;
+      document.getElementById('save-status').textContent = 'Saved ' + new Date().toLocaleTimeString();
+    } else {
+      showToast('Error: ' + data.error, 'error');
+    }
+  } catch (e) {
+    showToast('Save failed: ' + e.message, 'error');
+  }
+
+  btn.disabled = false; btn.textContent = '💾 Save Changes';
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function markUnsaved() {
+  unsaved = true;
+  document.getElementById('save-status').textContent = '● Unsaved changes';
+  document.getElementById('save-status').style.color = 'var(--amber)';
+}
+
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show ' + type;
+  setTimeout(() => { t.className = ''; }, 3500);
+}
+
+function esc(str) {
+  return String(str || '').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function getDefaultCMS() {
+  return { site:{tagline:'',phone:'',whatsapp:'',email:'',address:''},hero:{heading_line1:'',heading_line2:'',subtext:'',banner_image_url:''},about:{name:'',title:'',photo_url:'',years_experience:'18',paragraphs:[''],quote:''},featured_properties:[],vehicles:[],extra_pages:[{id:'jpinfra',enabled:true,nav_label:'JP Infra',url:'pages/jpinfra/index-jp.html',footer_label:'JP Infra'},{id:'page2',enabled:false,nav_label:'New Page',url:'',footer_label:''}],jp_infra:{featured_listings:[],budget_listings:[],rental_listings:[]} };
+}
+
+// Warn before leaving with unsaved changes
+window.addEventListener('beforeunload', e => { if (unsaved) { e.preventDefault(); e.returnValue = ''; } });
+</script>
+</body>
+</html>
