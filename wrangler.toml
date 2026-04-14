@@ -7,7 +7,7 @@ compatibility_date = "2024-01-01"
 # Then paste the ID below
 [[kv_namespaces]]
 binding = "PRIME_TRUST_KV"
-id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+id = "f0894c4e46d9437386882aed3c2720bf"
 
 # ─── R2 Bucket (stores uploaded images) ────────────────────────────
 # Run: wrangler r2 bucket create prime-trust-images
