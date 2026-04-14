@@ -118,7 +118,7 @@ export default {
 
         // Public URL — set your R2 custom domain or use this pattern
         // If you've set a public bucket domain in Cloudflare, use that here:
-        const publicUrl = `https://images.primetrustrealtor.com/${filename}`;
+        const publicUrl = `https://pub-2ae706b07d43441fbce513a4cc326402.r2.dev/${filename}`;
         // Fallback: use worker URL pattern if no custom domain:
         // const publicUrl = `${url.origin}/images/${filename}`;
 
