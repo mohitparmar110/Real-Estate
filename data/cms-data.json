@@ -1,27 +1,239 @@
 {
-  "settings": {
-    "siteName": "Prime Trust Realtor",
+  "_readme": "Edit this file to update the entire website. Push to GitHub → site updates in ~30 seconds.",
+
+  "site": {
+    "tagline": "Over 18 Years of Unwavering Trust & Excellence in Banking and Real Estate Advisory.",
+    "phone": "+91 7045002081",
     "whatsapp": "917045002081",
-    "waMsg": "Hello George, I am interested in one of your listings."
+    "email": "Georgecena.gc@gmail.com",
+    "address": "Mumbai, Maharashtra",
+    "copyright_year": "2026"
   },
-  "pages": [
+
+  "hero": {
+    "heading_line1": "Expertise You Can Bank On.",
+    "heading_line2": "Real Estate You Can Trust.",
+    "subtext": "Guided by 18+ years of industry experience to help you secure luxury residences and premium investments across India and Dubai.",
+    "banner_image_url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2053&q=80"
+  },
+
+  "about": {
+    "name": "George Cherian",
+    "title": "Founder – Prime Trust Realtor",
+    "photo_url": "https://cdn.jsdelivr.net/gh/mohitparmar110/Real-Estate/images/DSC_0010.jpg",
+    "years_experience": "18",
+    "paragraphs": [
+      "George Cherian is a seasoned professional with over 18 years of experience in banking, leadership, sales, and customer relationship management. After building a successful career in the financial sector, he brings his strong expertise in client advisory, negotiation, and strategic planning into the real estate industry.",
+      "As the Founder of Prime Trust Realtor, George specializes in helping clients buy, sell, and invest in residential properties across Mumbai, particularly in premium developments such as JP North and surrounding areas up to South Mumbai.",
+      "His strong financial background allows him to guide clients with transparent advice, market insights, and the best value deals within their budget. George believes that buying a property is one of the most important decisions in life.",
+      "With a deep understanding of property valuation, negotiation, documentation, and market trends, George works closely with buyers, sellers, and investors to create win-win opportunities in the real estate market."
+    ],
+    "quote": "Prime Trust Realtor is committed to delivering reliable property solutions with integrity, transparency, and dedication."
+  },
+
+  "featured_properties": [
     {
-      "id": "mnfzevu5tcn2p",
-      "title": "TEST",
-      "slug": "test",
-      "subtitle": "2bhk",
-      "desc": "TEST TEST",
-      "location": "Miraroad",
-      "announcement": "JP infra test",
-      "status": "published",
-      "bannerUrl": "https://raw.githubusercontent.com/mohitparmar110/Real-Estate/main/images/banner-1775044060287.jpg",
-      "seoTitle": "TEST",
-      "seoDesc": "TEST",
-      "keywords": "TEST",
-      "ogImage": "",
-      "updatedAt": "2026-04-01T11:47:57.485Z",
-      "createdAt": "2026-04-01T11:47:57.485Z"
+      "id": "prop1",
+      "title": "Signature Marina Penthouse",
+      "location": "Dubai, UAE",
+      "location_badge": "DUBAI, UAE",
+      "price_label": "Contact Advisor",
+      "image_url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80",
+      "tags": ["Sea-Facing", "Smart Home"],
+      "description": "Experience unparalleled luxury in this sprawling full-floor penthouse featuring 360-degree views of the Dubai skyline.",
+      "whatsapp_message": "Hello George, I am very interested in the 'Signature Marina Penthouse' property listed on your website. Could we connect to discuss further?",
+      "visible": true
+    },
+    {
+      "id": "prop2",
+      "title": "Sea-Facing Luxury Estate",
+      "location": "Bandra West, Mumbai",
+      "location_badge": "MUMBAI, INDIA",
+      "price_label": "Contact Advisor",
+      "image_url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80",
+      "tags": ["Independent Estate", "Premium Build"],
+      "description": "A rare, ultra-premium independent estate in the heart of Bandra offering expansive ocean views and home automation.",
+      "whatsapp_message": "Hi George, I am interested in the 'Sea-Facing Luxury Estate' property in Mumbai. Could we have a quick chat about it?",
+      "visible": true
     }
   ],
-  "listings": []
+
+  "vehicles": [
+    {
+      "id": "car1",
+      "title": "Mercedes-Benz S-Class",
+      "location_badge": "MUMBAI",
+      "status": "Available",
+      "image_url": "https://images.unsplash.com/photo-1617531653332-bd46c24f2068?auto=format&fit=crop&w=1600&q=80",
+      "tags": ["1st Owner", "Company Serviced", "Low Mileage"],
+      "description": "Immaculate condition, chauffeur-driven, zero depreciation insurance valid till year-end.",
+      "whatsapp_message": "Hello George, I am interested in the Mercedes-Benz S-Class. Could we discuss the history and pricing?",
+      "visible": true
+    },
+    {
+      "id": "car2",
+      "title": "Range Rover Autobiography",
+      "location_badge": "MUMBAI",
+      "status": "Available",
+      "image_url": "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1600&q=80",
+      "tags": ["Clean Title", "Freshly Owned"],
+      "description": "Pristine SUV with complete service logs. Perfect interior, non-accidental guarantee.",
+      "whatsapp_message": "Hi George, I am interested in the Range Rover Autobiography. Could we have a quick chat?",
+      "visible": true
+    }
+  ],
+
+  "extra_pages": [
+    {
+      "id": "jpinfra",
+      "enabled": true,
+      "nav_label": "JP Infra",
+      "url": "pages/jpinfra/index-jp.html",
+      "footer_label": "JP Infra"
+    },
+    {
+      "id": "page2",
+      "enabled": false,
+      "nav_label": "New Page",
+      "url": "pages/page2/index.html",
+      "footer_label": "New Page",
+      "_note": "Set enabled:true and fill nav_label/url to activate this second page"
+    }
+  ],
+
+  "jp_infra": {
+    "announcement": "JP Infra Premium Listings — Starting ₹55 Lakhs · Mira Road & Nearby Projects",
+    "hero_heading_line1": "Flats Available in",
+    "hero_heading_line2": "JP North & Nearby",
+    "hero_subtext": "2 BHK, 3 BHK, jodi flats, premium units, rentals, auction deals, and commercial properties in Mira Road and surrounding premium projects.",
+    "stats": [
+      { "icon": "🏷️", "label": "Starting From", "value": "₹55 Lakhs" },
+      { "icon": "🏢", "label": "Unit Types", "value": "1, 2 & 3 BHK" },
+      { "icon": "🏙️", "label": "Deal Types", "value": "Sale · Rent · Auction" },
+      { "icon": "🚗", "label": "Features", "value": "Parking + Furnished" }
+    ],
+    "featured_listings": [
+      {
+        "id": "jp1",
+        "title": "3 BHK Fully Furnished",
+        "subtitle": "Mountain View",
+        "location": "JP North, Mira Road",
+        "price": "₹1.80 Cr",
+        "badge_type": "For Sale",
+        "badge_color": "blue",
+        "image_url": "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=1000&q=80",
+        "tags": ["Furnished", "Parking", "Mountain View"],
+        "description": "Higher floor · Mountain facing · Parking included · Fully furnished · Prime tower · Ready possession",
+        "features": ["Higher Floor", "Fully Furnished", "Parking Included", "Mountain Facing", "Ready to Move"],
+        "whatsapp_message": "Hello George, I am interested in the 3 BHK Fully Furnished Mountain View flat at JP North priced at ₹1.80 Cr. Please share more details.",
+        "visible": true
+      },
+      {
+        "id": "jp2",
+        "title": "2 BHK – 29th Floor",
+        "subtitle": "Premium Tower",
+        "location": "JP North, Mira Road",
+        "price": "₹1.25 Cr",
+        "badge_type": "Premium",
+        "badge_color": "amber",
+        "image_url": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1000&q=80",
+        "tags": ["29th Floor", "With Parking", "City Views"],
+        "description": "Premium tower · 29th floor · With dedicated parking · Great city views · Ready possession · Society amenities included",
+        "features": ["29th Floor", "With Parking", "City Views", "Ready Possession", "Society Amenities"],
+        "whatsapp_message": "Hello George, I am interested in the 2 BHK on 29th Floor Premium Tower at JP North priced at ₹1.25 Cr. Please share more details.",
+        "visible": true
+      },
+      {
+        "id": "jp3",
+        "title": "2 BHK Jodi",
+        "subtitle": "Barcelona D Wing",
+        "location": "JP North, Mira Road",
+        "price": "₹3.60 Cr",
+        "badge_type": "Jodi Flat",
+        "badge_color": "red",
+        "image_url": "https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=1000&q=80",
+        "tags": ["Jodi Flat", "2 Parking", "D Wing"],
+        "description": "Premium D Wing · Jodi flat (2 combined units) · 2 dedicated parking slots · Rare availability · Ultra-spacious living",
+        "features": ["D Wing – Jodi Flat", "2 Parking Slots", "Ultra Spacious", "Rare Availability"],
+        "whatsapp_message": "Hello George, I am interested in the 2 BHK Jodi Flat in Barcelona D Wing at JP North priced at ₹3.60 Cr. Please share more details.",
+        "visible": true
+      }
+    ],
+    "budget_listings": [
+      {
+        "id": "b1",
+        "title": "BHK Bank Auction Flat",
+        "location": "JP North, Mira Road",
+        "price": "₹55 Lakhs",
+        "image_url": "https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=800&q=80",
+        "subtitle": "Below market rate · Verified",
+        "description": "Bank auction flat · Below market rate · Clean title · Verified documentation · Ideal investment opportunity",
+        "features": ["Bank Auction", "Below Market Rate", "Clean Title", "Investment Deal"],
+        "whatsapp_message": "Hello George, I am interested in the BHK Bank Auction Flat at ₹55 Lakhs. Please share more details.",
+        "visible": true
+      },
+      {
+        "id": "b2",
+        "title": "1 BHK Package Deal",
+        "location": "JP North, Mira Road",
+        "price": "₹80 Lakhs",
+        "image_url": "https://images.unsplash.com/photo-1502672023488-70e25813eb80?auto=format&fit=crop&w=800&q=80",
+        "subtitle": "First-time buyer · Easy loan",
+        "description": "Great package deal for first-time buyers · Society amenities · Easy loan approval · Metro connectivity · Ready to move",
+        "features": ["Package Deal", "First-Time Buyer", "Easy Loan", "Metro Nearby"],
+        "whatsapp_message": "Hello George, I am interested in the 1 BHK Package Deal at ₹80 Lakhs. Please share more details.",
+        "visible": true
+      },
+      {
+        "id": "b3",
+        "title": "BHK Studio Apartment",
+        "location": "JP North, Mira Road",
+        "price": "₹95 Lakhs",
+        "image_url": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80",
+        "subtitle": "Professionals · Investors · Ready",
+        "description": "Studio / BHK apartment · Perfect for professionals or investors · Modern fittings · Excellent rental yield",
+        "features": ["Studio Flat", "Good Rental Yield", "Modern Fittings", "Ready Possession"],
+        "whatsapp_message": "Hello George, I am interested in the Studio Apartment at ₹95 Lakhs. Please share more details.",
+        "visible": true
+      },
+      {
+        "id": "b4",
+        "title": "BHK Without Parking",
+        "location": "JP North, Mira Road",
+        "price": "₹1 Cr",
+        "image_url": "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=800&q=80",
+        "subtitle": "Budget option · Clean title",
+        "description": "BHK without parking – budget-friendly pricing · Great building amenities · Clean title · Flexible payment terms",
+        "features": ["No Parking", "Budget Friendly", "Clean Title", "Flexible Payment"],
+        "whatsapp_message": "Hello George, I am interested in the BHK Without Parking at ₹1 Cr. Please share more details.",
+        "visible": true
+      }
+    ],
+    "rental_listings": [
+      {
+        "id": "r1",
+        "title": "2 BHK Rental",
+        "subtitle": "Barcelona D Wing",
+        "location": "JP North, Mira Road",
+        "price": "₹45,000 / Month",
+        "image_url": "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1000&q=80",
+        "description": "2 BHK rental in premium Barcelona D Wing · Fully maintained society · Close to schools and malls · Available immediately",
+        "features": ["Barcelona D Wing", "Ready to Move In", "Society Maintained", "Close to Malls"],
+        "whatsapp_message": "Hello George, I am interested in renting a 2 BHK in Barcelona D Wing for ₹45,000 per month. Please share more details.",
+        "visible": true
+      },
+      {
+        "id": "r2",
+        "title": "3 BHK Rental",
+        "subtitle": "Barcelona D Wing",
+        "location": "JP North, Mira Road",
+        "price": "₹60,000 / Month",
+        "image_url": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1000&q=80",
+        "description": "Spacious 3 BHK rental in prestigious Barcelona D Wing · Higher floor · Modern interiors · Parking available",
+        "features": ["3 BHK Spacious", "Higher Floor", "Modern Interiors", "Parking Available"],
+        "whatsapp_message": "Hello George, I am interested in renting a 3 BHK in Barcelona D Wing for ₹60,000 per month. Please share more details.",
+        "visible": true
+      }
+    ]
+  }
 }
