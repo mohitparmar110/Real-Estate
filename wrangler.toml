@@ -1,0 +1,24 @@
+name = "prime-trust-worker"
+main = "functions/worker.js"
+compatibility_date = "2024-01-01"
+
+# ─── KV Namespace (stores cms-data.json) ───────────────────────────
+# Run: wrangler kv:namespace create PRIME_TRUST_KV
+# Then paste the ID below
+[[kv_namespaces]]
+binding = "PRIME_TRUST_KV"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+
+# ─── R2 Bucket (stores uploaded images) ────────────────────────────
+# Run: wrangler r2 bucket create prime-trust-images
+[[r2_buckets]]
+binding = "PRIME_TRUST_IMAGES"
+bucket_name = "prime-trust-images"
+
+# ─── Secret (admin password) ───────────────────────────────────────
+# Run: wrangler secret put ADMIN_PASSWORD
+# (You will be prompted to type the password — keep it safe!)
+
+# ─── Routes ────────────────────────────────────────────────────────
+# After deploying Pages, add this route in Cloudflare dashboard:
+# Route: primetrustrealtor.com/api/* → this worker
